@@ -1,5 +1,7 @@
 package Behaviours;
 
+import Helpers.DFHelper;
+import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -10,6 +12,8 @@ import java.util.List;
 public class BuyerReceiveSuccess extends OneShotBehaviour {
 
     List<ACLMessage> answers;
+    private List<AID> agents;
+    private int result;
 
     public BuyerReceiveSuccess(List<ACLMessage> answers) {
         this.answers = answers;
@@ -24,5 +28,17 @@ public class BuyerReceiveSuccess extends OneShotBehaviour {
         }
         inform.setContent("Deal's done");
         getAgent().send(inform);
+    }
+
+    @Override
+    public int onEnd() {
+        ACLMessage condition = new ACLMessage(ACLMessage.INFORM);
+        agents = DFHelper.findAgents(getAgent(), "Test");
+        for (AID agent: agents){
+            condition.addReceiver(agent);
+        }
+        condition.setContent("Accept");
+        getAgent().send(condition);
+        return result;
     }
 }

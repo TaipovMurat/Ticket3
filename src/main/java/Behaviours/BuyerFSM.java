@@ -17,8 +17,8 @@ public class BuyerFSM extends FSMBehaviour {
         registerFirstState(new BuyerRequestAndWaitResponse(myAgent, 5000, answers), RECEIVE);
 
         registerLastState(new BuyerReceiveSuccess(answers), SUCCESS);
-        registerLastState(new BuyerReceiveIgnore(), IGNORE);
         registerLastState(new BuyerReceiveRefuse(answers), REFUSE);
+        registerLastState(new BuyerReceiveIgnore(), IGNORE);
 
         registerTransition(RECEIVE, SUCCESS, 0);
         registerTransition(RECEIVE, REFUSE, 1);
